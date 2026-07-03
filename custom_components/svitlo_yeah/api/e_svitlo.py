@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-from datetime import date, datetime, time
+from datetime import date, datetime, time, timedelta
 from typing import TYPE_CHECKING
 
 import aiohttp
@@ -252,7 +252,7 @@ class ESvitloClient:
 
             # Handle end time on next day (e.g., 23:00-04:00)
             if end_time < start_time:
-                end_datetime = end_datetime.replace(day=end_datetime.day + 1)
+                end_datetime = end_datetime + timedelta(days=1)
 
             return PlannedOutageEvent(
                 start=start_datetime,

@@ -8,7 +8,7 @@ from datetime import UTC, datetime
 
 import aiohttp
 
-from ...const import DTEK_FRESH_DATA_DAYS
+from ...const import DTEK_FRESH_DATA_DAYS, TZ_UA
 from .base import DtekAPIBase, FetchResult
 
 LOGGER = logging.getLogger(__name__)
@@ -26,7 +26,7 @@ def _parse_update_dt(update_dt: str | None) -> datetime | None:
         return None
     for fmt in _UPDATE_DATE_FORMATS:
         try:
-            return datetime.strptime(update_dt, fmt).astimezone(UTC)
+            return datetime.strptime(update_dt, fmt).replace(tzinfo=TZ_UA)
         except ValueError:
             continue
     return None

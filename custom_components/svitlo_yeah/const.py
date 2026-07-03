@@ -18,6 +18,7 @@ CONF_GROUP: Final = "group"
 CONF_ACCOUNT_ID: Final = "account_id"
 CONF_ADDRESS_STR: Final = "address_str"
 CONF_PROVIDER_TYPE: Final = "provider_type"
+CONF_ALLOW_STALE_DATA: Final = "allow_stale_data"
 
 # Provider types
 PROVIDER_TYPE_YASNO: Final = "yasno"

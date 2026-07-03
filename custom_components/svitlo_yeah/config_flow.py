@@ -23,6 +23,7 @@ from .api.yasno import YASNO_REGIONS_ENDPOINT, YasnoApi
 from .const import (
     CONF_ACCOUNT_ID,
     CONF_ADDRESS_STR,
+    CONF_ALLOW_STALE_DATA,
     CONF_GROUP,
     CONF_PROVIDER,
     CONF_PROVIDER_TYPE,
@@ -148,7 +149,9 @@ class IntegrationConfigFlow(ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             LOGGER.debug("async_step_group: User input: %s", user_input)
             self.data.update(user_input)  # add group to the config
-            self.data.pop("_stale_ack", None)  # flow-local flag, do not persist
+            if self.data.pop("_stale_ack", None):
+                # Persist the consent so polling can keep honoring it
+                self.data[CONF_ALLOW_STALE_DATA] = True
 
             LOGGER.info("async_step_group: Done. Creating entry from %s", self.data)
             # noinspection PyTypeChecker

@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING
 from homeassistant.util import dt as dt_utils
 
 from ...const import (
+    CONF_ALLOW_STALE_DATA,
     CONF_GROUP,
     CONF_PROVIDER,
     DEBUG,
@@ -86,7 +87,13 @@ class DtekCoordinatorBase(IntegrationCoordinator):
 
         # Coordinator-level caching (per provider)
         now = dt_utils.now()
-        await self.api.fetch_data()
+        allow_stale_data = bool(
+            self.config_entry.options.get(
+                CONF_ALLOW_STALE_DATA,
+                self.config_entry.data.get(CONF_ALLOW_STALE_DATA, False),
+            )
+        )
+        await self.api.fetch_data(allow_stale_data=allow_stale_data)
         LOGGER.debug("Fetched fresh data for %s", self)
 
         # Check if outage data has changed (used for last_data_change attribute)

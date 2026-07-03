@@ -357,7 +357,7 @@ class YasnoApi:
         """Get the current event."""
         all_events = self.get_events(at, at + timedelta(days=1))
         for event in all_events:
-            if event.all_day and event.start == at.date():
+            if event.all_day and event.start <= at.date() < event.end:
                 return event
             if not event.all_day and event.start <= at < event.end:
                 return event
